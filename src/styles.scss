@@ -7,7 +7,7 @@
 $custom-app-color-primary: mat-palette($mat-amber, 600);
 $custom-app-color-secondary: mat-palette($mat-blue-gray, 500);
 $custom-app-color-warning: mat-palette($mat-red);
-$custom-theme: mat-dark-theme($custom-app-color-primary, $custom-app-color-secondary, $custom-app-color-warning);
+$custom-theme: mat-light-theme($custom-app-color-primary, $custom-app-color-secondary, $custom-app-color-warning);
 
 @include angular-material-theme($custom-theme);
 

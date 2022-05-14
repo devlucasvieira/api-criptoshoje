@@ -1,26 +1,32 @@
 <mat-card>
-
   <mat-toolbar color="primary">
     <mat-toolbar-row>
       <span>Preços de criptomoedas de hoje por capitalização de mercado</span>
     </mat-toolbar-row>
   </mat-toolbar>
 
-  <table mat-table [dataSource]="criptos" class="mat-elevation-z8">
+  <div *ngIf="criptos$ | async as criptos; else loading">
+    <table mat-table [dataSource]="criptos" class="mat-elevation-z8">
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nome</th>
+        <td mat-cell *matCellDef="let cripto">{{ cripto.name }}</td>
+      </ng-container>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Nome </th>
-      <td mat-cell *matCellDef="let cripto"> {{ cripto.name }} </td>
-    </ng-container>
+      <!-- Type Column -->
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef>Tipo</th>
+        <td mat-cell *matCellDef="let cripto">{{ cripto.type }}</td>
+      </ng-container>
 
-    <!-- Type Column -->
-    <ng-container matColumnDef="type">
-      <th mat-header-cell *matHeaderCellDef> Tipo </th>
-      <td mat-cell *matCellDef="let cripto"> {{ cripto.type }} </td>
-    </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+  <ng-template #loading>
+    <div class="loading-spinner">
+      <mat-spinner></mat-spinner>
+    </div>
+  </ng-template>
 </mat-card>

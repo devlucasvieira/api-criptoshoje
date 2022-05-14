@@ -1,5 +1,9 @@
+import { ErrorDialogComponent } from './../../shared/components/error-dialog/error-dialog.component';
+import { CriptosService } from './../services/criptos.service';
 import { Cripto } from './../model/cripto';
 import { Component, OnInit } from '@angular/core';
+import { catchError, Observable, of } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-criptos',
@@ -8,20 +12,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CriptosComponent implements OnInit {
 
-   // Instanciar Array de Criptomoedas
-  criptos: Cripto[] = [
-    { _id: '1', name: 'Bitcoin', type: 'Criptomoeda' },
-    { _id: '2', name: 'Litecoin', type: 'Criptomoeda' },
-  ];
-
+  // CriptosService: CriptosService;
+  // Instanciar Array de Criptomoedas
+  criptos$: Observable<Cripto[]>;
   displayedColumns = ['name','type'];
 
-  constructor() {
-    this.criptos = [];
+  constructor (private criptosService: CriptosService, public dialog: MatDialog) {
+    // this.CriptosService = new CriptosService();
+    this.criptos$ = this.criptosService.list()
+    .pipe(
+      catchError(error => {
+        this.onError('Error ao Carregar a lista de criptomoedas.')
+        return of([]);
+      })
+    )
+
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
 
+  onError(errorMessage: string) {
+    this.dialog.open(ErrorDialogComponent, {
+      data: errorMessage,
+    });
   }
-
 }
